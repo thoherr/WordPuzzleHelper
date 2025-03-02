@@ -1,10 +1,11 @@
-import itertools
+import datetime
+import more_itertools
 import sys
 
 
 class WhatMakesSense:
     def __init__(self, characters):
-        self.characters = characters
+        self.characters = list(map(lambda c : c[0], characters))
         self.wordlist = self._load_wordlist()
 
     def meaningful_words(self):
@@ -14,7 +15,7 @@ class WhatMakesSense:
                 print(word)
 
     def _generate_permutations(self):
-        return itertools.permutations(self.characters)
+        return more_itertools.distinct_permutations(self.characters)
 
     def _load_wordlist(self):
         l = len(self.characters)
@@ -25,4 +26,6 @@ class WhatMakesSense:
 
 if __name__ == '__main__':
     whatMakesSense = WhatMakesSense(sys.argv[1:])
+    print(f"++++ started at {datetime.datetime.now()}")
     whatMakesSense.meaningful_words()
+    print(f"++++ finished at {datetime.datetime.now()}")
