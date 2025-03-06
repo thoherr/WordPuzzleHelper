@@ -52,8 +52,26 @@ class PatternMatcher(WordList):
         return words
 
 
+def usage():
+    print("Usage: python3 main.py algorithm arguments")
+    print("")
+    print("Algorithms:")
+    print("     matcher")
+    print("         Usage: python3 main.py matcher <pattern>")
+    print("                <pattern> is a fixed length pattern that should match, e.g. 'e..l' which would lead to the result")
+    print("                      ['earl', 'ebcl', 'edel', 'egal', 'egel', 'ekel', 'emil', 'engl', 'esel', 'esql', 'evtl', 'exil']")
+    print("")
+    print("     permutations")
+    print("         Usage: python3 main.py permutations <character> [<character>] ...")
+    print("                <character> ... is a list of characters (seperated by spaces) that should be in the result,")
+    print("                e.g. 'l h m e' which would lead to the result")
+    print("                      ['helm', 'lehm', 'mehl']")
+    exit(1)
+
 if __name__ == '__main__':
     print(f"++++ started at {datetime.datetime.now()}")
+    if len(sys.argv) < 2:
+        usage()
     algorithm = sys.argv[1]
     if algorithm == 'matcher':
         matcher = PatternMatcher(sys.argv[2:])
