@@ -15,25 +15,27 @@ class WordList:
                 filter(wordlist_filter, f.read().splitlines())))
 
 
-class WhatMakesSense(WordList):
+class MeaningfulPermutations(WordList):
 
     def __init__(self, characters : list):
         self.characters = characters
         l = len(characters)
         super().__init__(lambda w : len(w) == l)
 
-    def meaningful_words(self):
+    def result(self):
+        words = []
         for sequence in self._generate_permutations():
             word = ''.join(sequence)
             if word in self.wordlist:
-                print(word)
+                words.append(word)
+        return words
 
     def _generate_permutations(self):
         return more_itertools.distinct_permutations(self.characters)
 
 
 if __name__ == '__main__':
-    whatMakesSense = WhatMakesSense(sys.argv[1:])
+    permutations = MeaningfulPermutations(sys.argv[1:])
     print(f"++++ started at {datetime.datetime.now()}")
-    whatMakesSense.meaningful_words()
+    print(permutations.result())
     print(f"++++ finished at {datetime.datetime.now()}")
