@@ -8,8 +8,9 @@ import sys
 def _load_wordlist(wordlist_filter : lambda x : bool):
     # wordlist from https://gist.github.com/MarvinJWendt/2f4f4154b8ae218600eb091a5706b5f4
     with open('wordlist-german.txt') as f:
-        return list(map(lambda w: w.casefold(),
-            filter(wordlist_filter, f.read().splitlines())))
+        return list(filter(wordlist_filter,
+                           map(lambda w: w.casefold().replace('ä', 'ae').replace('ö', 'oe').replace('ü', 'ue'),
+                               f.read().splitlines())))
 
 
 class WordList:
