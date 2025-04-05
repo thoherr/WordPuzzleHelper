@@ -21,7 +21,7 @@ class WordList:
 
 class MeaningfulPermutations(WordList):
 
-    def __init__(self, args : list):
+    def __init__(self, args : str):
         self._characters = args
         l = len(self._characters)
         super().__init__(lambda w : len(w) == l)
@@ -39,8 +39,8 @@ class MeaningfulPermutations(WordList):
 
 
 class PatternMatcher(WordList):
-    def __init__(self, args : list):
-        self._pattern = args[0]
+    def __init__(self, args : str):
+        self._pattern = args
         l = len(self._pattern)
         super().__init__(lambda w : len(w) == l)
 
@@ -62,22 +62,22 @@ def usage():
     print("                      ['earl', 'ebcl', 'edel', 'egal', 'egel', 'ekel', 'emil', 'engl', 'esel', 'esql', 'evtl', 'exil']")
     print("")
     print("     permutations")
-    print("         Usage: python3 main.py permutations <character> [<character>] ...")
-    print("                <character> ... is a list of characters (seperated by spaces) that should be in the result,")
-    print("                e.g. 'l h m e' which would lead to the result")
+    print("         Usage: python3 main.py permutations <characters>")
+    print("                <characters> is a list of characters (without spaces) that should be in the result,")
+    print("                e.g. 'lhme' which would lead to the result")
     print("                      ['helm', 'lehm', 'mehl']")
     exit(1)
 
 if __name__ == '__main__':
     print(f"++++ started at {datetime.datetime.now()}")
-    if len(sys.argv) < 2:
+    if len(sys.argv) != 3:
         usage()
     algorithm = sys.argv[1]
     if algorithm == 'matcher':
-        matcher = PatternMatcher(sys.argv[2:])
+        matcher = PatternMatcher(sys.argv[2])
         print(matcher.result())
     elif algorithm == 'permutations':
-        permutations = MeaningfulPermutations(sys.argv[2:])
+        permutations = MeaningfulPermutations(sys.argv[2])
         print(permutations.result())
     else:
         print(f"Invalid algorithm: {algorithm}")
