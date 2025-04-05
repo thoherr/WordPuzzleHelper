@@ -24,14 +24,20 @@ class MeaningfulPermutations(WordList):
     def __init__(self, args : str):
         self._characters = args
         l = len(self._characters)
+        self._is_pattern = '.' in self._characters
         super().__init__(lambda w : len(w) == l)
 
     def result(self):
         words = []
         for sequence in self._generate_permutations():
-            word = ''.join(sequence)
-            if word in self.wordlist:
-                words.append(word)
+            candidate = ''.join(sequence)
+            if self._is_pattern:
+                for word in self.wordlist:
+                    if re.fullmatch(candidate, word):
+                        words.append(word)
+            else:
+                if candidate in self.wordlist:
+                    words.append(candidate)
         return words
 
     def _generate_permutations(self):
