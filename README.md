@@ -9,13 +9,13 @@ The currently implemented lookup algorithms are
 
 The first variant looks for permutations of a given sequence of characters in the (german) wordlist.
 
-Therefore you have to provide a list of characters as arguments, separated by spaces.
+Therefore you have to provide a list of characters, provided as a single string argument.
 
 The script computes all possible permutations of the list of character, compares them with the (normalized)
 wordlist and collects all matches, e.g.
 
 ```shell
-bash % python3 main.py permutations l h m e
+bash % python3 main.py permutations lhme
 Loaded 2531 words
 ['helm', 'lehm', 'mehl']
 ```
