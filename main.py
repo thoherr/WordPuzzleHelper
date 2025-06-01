@@ -33,7 +33,7 @@ class MeaningfulPermutations(WordList):
             candidate = ''.join(sequence)
             if self._is_pattern:
                 for word in self.wordlist:
-                    if re.fullmatch(candidate, word):
+                    if re.fullmatch(candidate, word) and word not in words:
                         words.append(word)
             else:
                 if candidate in self.wordlist:
