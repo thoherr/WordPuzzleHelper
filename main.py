@@ -1,5 +1,6 @@
 import datetime
 import re
+from collections import Counter
 
 import more_itertools
 import sys
@@ -19,13 +20,18 @@ class WordList:
         print(f"Loaded {len(self.wordlist)} words")
 
 
+def _word_is_possible(word, char_count):
+    word_count = Counter(word)
+    return all(char_count[c] <= word_count[c] for c in word_count)
+
+
 class MeaningfulPermutations(WordList):
 
     def __init__(self, args : str):
         self._characters = args
         l = len(self._characters)
         self._is_pattern = '.' in self._characters
-        super().__init__(lambda w : len(w) == l)
+        super().__init__(lambda w : len(w) == l and _word_is_possible(w, Counter(self._characters)))
 
     def result(self):
         words = []
