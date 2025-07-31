@@ -26,13 +26,24 @@ def _word_is_possible(word, char_count):
     return all(char_count[c] <= word_count[c] for c in word_count)
 
 
+def _exact_char_match(word, char_count):
+    return Counter(word) == char_count
+
+
 class MeaningfulPermutations(WordList):
 
     def __init__(self, args : str):
         self._characters = args
         l = len(self._characters)
         self._is_pattern = '.' in self._characters
-        super().__init__(lambda w : len(w) == l and _word_is_possible(w, Counter(self._characters)))
+        char_count = Counter(self._characters)
+        
+        if self._is_pattern:
+            # Keep permissive filtering for pattern mode
+            super().__init__(lambda w : len(w) == l and _word_is_possible(w, char_count))
+        else:
+            # Use exact character frequency matching for non-pattern mode
+            super().__init__(lambda w : len(w) == l and _exact_char_match(w, char_count))
 
     def result(self):
         found_words = set()
