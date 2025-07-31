@@ -17,6 +17,7 @@ def _load_wordlist(wordlist_filter : lambda x : bool):
 class WordList:
     def __init__(self, wordlist_filter : lambda x : bool):
         self.wordlist = _load_wordlist(wordlist_filter)
+        self.wordset = set(self.wordlist)
         print(f"Loaded {len(self.wordlist)} words")
 
 
@@ -34,17 +35,17 @@ class MeaningfulPermutations(WordList):
         super().__init__(lambda w : len(w) == l and _word_is_possible(w, Counter(self._characters)))
 
     def result(self):
-        words = []
+        found_words = set()
         for sequence in self._generate_permutations():
             candidate = ''.join(sequence)
             if self._is_pattern:
                 for word in self.wordlist:
-                    if re.fullmatch(candidate, word) and word not in words:
-                        words.append(word)
+                    if re.fullmatch(candidate, word):
+                        found_words.add(word)
             else:
-                if candidate in self.wordlist:
-                    words.append(candidate)
-        return words
+                if candidate in self.wordset:
+                    found_words.add(candidate)
+        return list(found_words)
 
     def _generate_permutations(self):
         return more_itertools.distinct_permutations(self._characters)
