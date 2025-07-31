@@ -34,3 +34,11 @@ bash % python3 main.py matcher e..l
 Loaded 2531 words
 ['earl', 'ebcl', 'edel', 'egal', 'egel', 'ekel', 'emil', 'engl', 'esel', 'esql', 'evtl', 'exil']
 ```
+
+## Running Tests
+
+To run the test suite and verify the functionality of both algorithms:
+
+```shell
+python3 -m unittest test_main.py -v
+```
