@@ -47,16 +47,24 @@ class MeaningfulPermutations(WordList):
 
     def result(self):
         found_words = set()
-        for sequence in self._generate_permutations():
-            candidate = ''.join(sequence)
-            if self._is_pattern:
+        
+        if self._is_pattern:
+            # Generate all permutations and use each as a regex pattern
+            for sequence in self._generate_permutations():
+                pattern = ''.join(sequence)
+                compiled_pattern = re.compile(pattern)
                 for word in self.wordlist:
-                    if re.fullmatch(candidate, word):
+                    if compiled_pattern.fullmatch(word):
                         found_words.add(word)
-            else:
+        else:
+            # Original non-pattern logic
+            for sequence in self._generate_permutations():
+                candidate = ''.join(sequence)
                 if candidate in self.wordset:
                     found_words.add(candidate)
+        
         return list(found_words)
+
 
     def _generate_permutations(self):
         return more_itertools.distinct_permutations(self._characters)
@@ -66,12 +74,18 @@ class PatternMatcher(WordList):
     def __init__(self, args : str):
         self._pattern = args
         l = len(self._pattern)
+        
+        # Pre-compile regex for better performance
+        self._regex = re.compile(self._pattern)
+        
+        # Simplified filtering: only filter by length for simple patterns
+        # Complex filtering overhead outweighs benefits for most cases
         super().__init__(lambda w : len(w) == l)
 
     def result(self):
         words = []
         for word in self.wordlist:
-            if re.fullmatch(self._pattern, word):
+            if self._regex.fullmatch(word):
                 words.append(word)
         return words
 
